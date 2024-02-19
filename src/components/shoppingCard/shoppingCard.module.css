@@ -1,0 +1,8 @@
+.container {
+  background-color: var(--btn-normal);
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  color: var(--primary-dark);
+  cursor: pointer;
+  font-size: small;
+}
