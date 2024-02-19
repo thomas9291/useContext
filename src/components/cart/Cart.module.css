@@ -1,0 +1,31 @@
+.container h2 {
+  font-weight: 500;
+  color: var(--primary-dark);
+}
+.container li {
+  list-style: none;
+  display: flex;
+  width: 100%;
+  background-color: var(--btn-light);
+  padding: 0.2rem 0.5rem;
+  font-size: small;
+  justify-content: space-between;
+  align-items: center;
+}
+.container ul {
+  margin: 1rem 0;
+}
+.container button {
+  background-color: transparent;
+  border: none;
+  font-size: small;
+  cursor: pointer;
+  margin: 0 0.5rem;
+  color: var(--primary-normal);
+}
+.totalContainer {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+}
