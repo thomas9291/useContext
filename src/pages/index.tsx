@@ -10,63 +10,13 @@ import { useState } from "react";
 
 export default function Home() {
   const [isDialog, setIsDialog] = useState(false);
-  const [shoppingCardItems, setShoppingCartItems] = useState<any>({
-    items: [],
-  });
+
   function handleOpenDialogClick() {
     setIsDialog(true);
   }
   function handleCloseDialogClick() {
     setIsDialog(false);
   }
-  function addItemToCart(id: any) {
-    setShoppingCartItems((prev: any) => {
-      const updatedItems = [...prev.items];
-      const existingCarItemIndex = updatedItems.findIndex(
-        (cartItem) => cartItem.id === id
-      );
-      const existingCartItem = updatedItems[existingCarItemIndex];
-      if (existingCartItem) {
-        const updatedItem = {
-          ...existingCartItem,
-          quantity: existingCartItem.quantity + 1,
-        };
-        updatedItems[existingCarItemIndex] = updatedItem;
-      } else {
-        const product = DUMMY_PRODUCTS.find((product) => product.id === id);
-        updatedItems.push({
-          id: id,
-          name: product!.title,
-          price: product!.price,
-          quantity: 1,
-        });
-      }
-      return {
-        items: updatedItems,
-      };
-    });
-  }
-  function updatedItem(productId: string, amount: number) {
-    setShoppingCartItems((prev: any) => {
-      const updatedItems = [...prev.items];
-      const existingItemCartItemIndex = updatedItems.findIndex(
-        (cartItem) => cartItem.id === productId
-      );
-      const updatedItem = { ...updatedItems[existingItemCartItemIndex] };
-      updatedItem.quantity += amount;
-      if (updatedItem.quantity <= 0) {
-        updatedItems.splice(existingItemCartItemIndex, 1);
-      } else {
-        updatedItems[existingItemCartItemIndex] = updatedItem;
-      }
-      return {
-        items: updatedItems,
-      };
-    });
-  }
-  const totalQuantity = shoppingCardItems.items
-    .map((element: any) => element.quantity)
-    .reduce((a: any, b: any) => a + b, 0);
 
   return (
     <>
@@ -88,10 +38,7 @@ export default function Home() {
           </div>
           <h1>ELEGANT CONTEXT</h1>
           <div className={styles.shoppingCard}>
-            <ShoppingCard
-              quantity={totalQuantity}
-              onClick={handleOpenDialogClick}
-            />
+            <ShoppingCard onClick={handleOpenDialogClick} />
           </div>
         </nav>
 
@@ -99,12 +46,7 @@ export default function Home() {
           <h3>ELEGANT CLOTHING FOR EVERYONE</h3>
           {isDialog && (
             <div className={styles.modal}>
-              <CardModal
-                onUpdatedItems={updatedItem}
-                items={shoppingCardItems.items}
-                onClick={handleCloseDialogClick}
-              />
-              ;
+              <CardModal onClick={handleCloseDialogClick} />;
             </div>
           )}
           <ul className={styles.ulContainer}>
@@ -112,7 +54,7 @@ export default function Home() {
               return (
                 <li key={element.id}>
                   <Card
-                    onClick={() => addItemToCart(element.id)}
+                    id={element.id}
                     title={element.title}
                     description={element.description}
                     price={element.price}

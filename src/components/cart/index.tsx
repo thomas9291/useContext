@@ -1,30 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import classes from "./Cart.module.css";
-interface Props {
-  items:
-    | [
-        {
-          id: string;
-          name: string;
-          price: number;
-          quantity: number;
-        }
-      ]
-    | any;
-  onUpdatedItems: (productId: string, amount: number) => void;
-}
+import { CartContext } from "@/store/shopping-cart-context";
 
-const Cart = (props: Props) => {
-  const totalAmount = props.items
+const Cart = () => {
+  const { items, updatedItem } = useContext(CartContext);
+  const totalAmount = items
     .map((element: any) => element.price * element.quantity)
     .reduce((a: number, b: number) => a + b, 0)
     .toFixed(2);
-  console.log("total amount form cart: ", totalAmount);
+
   return (
     <div className={classes.container}>
       <h2>YOUR CART</h2>
       <ul>
-        {props.items?.map((element: any) => {
+        {items?.map((element: any) => {
           return (
             <li key={element.id}>
               <div>
@@ -32,13 +21,9 @@ const Cart = (props: Props) => {
                 <span>(${element.price})</span>
               </div>
               <div>
-                <button onClick={() => props.onUpdatedItems(element.id, -1)}>
-                  -
-                </button>
+                <button onClick={() => updatedItem(element.id, -1)}>-</button>
                 <span>{element.quantity}</span>
-                <button onClick={() => props.onUpdatedItems(element.id, 1)}>
-                  +
-                </button>
+                <button onClick={() => updatedItem(element.id, 1)}>+</button>
               </div>
             </li>
           );
