@@ -7,7 +7,6 @@ import logo from "../../public/logo.png";
 import ShoppingCard from "@/components/shoppingCard";
 import CardModal from "@/components/cardModal";
 import { useState } from "react";
-import { log } from "console";
 
 export default function Home() {
   const [isDialog, setIsDialog] = useState(false);
@@ -47,7 +46,24 @@ export default function Home() {
       };
     });
   }
-
+  function updatedItem(productId: string, amount: number) {
+    setShoppingCartItems((prev: any) => {
+      const updatedItems = [...prev.items];
+      const existingItemCartItemIndex = updatedItems.findIndex(
+        (cartItem) => cartItem.id === productId
+      );
+      const updatedItem = { ...updatedItems[existingItemCartItemIndex] };
+      updatedItem.quantity += amount;
+      if (updatedItem.quantity <= 0) {
+        updatedItems.splice(existingItemCartItemIndex, 1);
+      } else {
+        updatedItems[existingItemCartItemIndex] = updatedItem;
+      }
+      return {
+        items: updatedItems,
+      };
+    });
+  }
   const totalQuantity = shoppingCardItems.items
     .map((element: any) => element.quantity)
     .reduce((a: any, b: any) => a + b, 0);
@@ -83,7 +99,12 @@ export default function Home() {
           <h3>ELEGANT CLOTHING FOR EVERYONE</h3>
           {isDialog && (
             <div className={styles.modal}>
-              <CardModal onClick={handleCloseDialogClick} />
+              <CardModal
+                onUpdatedItems={updatedItem}
+                items={shoppingCardItems.items}
+                onClick={handleCloseDialogClick}
+              />
+              ;
             </div>
           )}
           <ul className={styles.ulContainer}>
