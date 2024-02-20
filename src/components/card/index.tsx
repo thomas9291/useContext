@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useContext } from "react";
 import classes from "./card.module.css";
 import Image, { StaticImageData } from "next/image";
+import { CartContext } from "@/store/shopping-cart-context";
 
 interface Props {
   img: string | StaticImageData;
   title: string;
   price: number;
   description: string;
-  onClick: () => void;
+  id: string;
 }
 
 const Card = (props: Props) => {
+  const { addItemToCart } = useContext(CartContext);
   return (
     <div className={classes.container}>
       <div className={classes.imgContainer}>
@@ -27,7 +29,7 @@ const Card = (props: Props) => {
         <h4>{props.title}</h4>
         <p className={classes.price}>${props.price}</p>
         <p className={classes.description}>{props.description}</p>
-        <button className={classes.btn} onClick={props.onClick}>
+        <button className={classes.btn} onClick={() => addItemToCart(props.id)}>
           Add To Cart
         </button>
       </div>

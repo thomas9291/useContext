@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import classes from "./shoppingCard.module.css";
+import { CartContext } from "@/store/shopping-cart-context";
 
 interface Props {
   onClick: () => void;
-  quantity: number;
 }
 
 const ShoppingCard = (props: Props) => {
+  const { items } = useContext(CartContext);
+  const totalQuantity = items
+    .map((element: any) => element.quantity)
+    .reduce((a: any, b: any) => a + b, 0);
   return (
     <button className={classes.container} onClick={props.onClick}>
-      Cart({props.quantity})
+      Cart({totalQuantity})
     </button>
   );
 };
